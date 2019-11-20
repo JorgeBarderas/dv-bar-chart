@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="utf-8">
+		<script src="./libs/d3.v5.min.js"></script>
+		<script src="./libs/jquery-3.4.1.min.js"></script>
+		<script src="./code.js"></script>
+		<style>
+			.chart div {
+			  font: 10px sans-serif;
+			  background-color: steelblue;
+			  text-align: right;
+			  padding: 3px;
+			  margin: 1px;
+			  color: white;
+			}
+			.chartSVG rect, .chartTSV rect, .chartROT rect {
+			  fill: steelblue;
+			}
+			.chartSVG text, .chartTSV text {
+			  fill: white;
+			  font: 10px sans-serif;
+			  text-anchor: end;
+			}
+			.chartROT text {
+			  fill: white;
+			  font: 10px sans-serif;
+			  text-anchor: middle;
+			}
+			.axis text {
+			  font: 10px sans-serif;
+			}
+			.axis path,
+			.axis line {
+			  fill: none;
+			  stroke: #000;
+			  shape-rendering: crispEdges;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Let's make a bar chart</h1>
+		<h2>DIV</h2>
+		<div class="chart"></div>
+		<h2>SVG</h2>
+		<svg class="chartSVG"></svg>
+		<h2>TSV</h2>
+		<svg class="chartTSV"></svg>
+		<h2>Rotating into columns</h2>
+		<svg class="chartROT"></svg>
+	</body>
+</html>
