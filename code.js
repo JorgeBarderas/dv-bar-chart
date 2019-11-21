@@ -84,6 +84,14 @@ d3.tsv("data.tsv", function(error, data) {
         .text(function(d) { return d.value; });
   });
 
+
+  d3.tsv("data.tsv", function(data_item) {
+    return {
+      name: data_item.name,
+      value: +data_item.value // convert column to number
+    };
+  }).then(function(data_array) {
+
   // Rotating into columns
   var margin = {top: 20, right: 30, bottom: 30, left: 40},
       width = 960,
@@ -96,7 +104,8 @@ d3.tsv("data.tsv", function(error, data) {
   var xAxis = d3.axisBottom()
     .scale(x_rot);
   var yAxis = d3.axisLeft()
-    .scale(y_rot);
+    .scale(y_rot)
+    .ticks(10, "%");
 
   var chartROT = d3.select(".chartROT")
       .attr("width", width + margin.left + margin.right)
@@ -104,33 +113,24 @@ d3.tsv("data.tsv", function(error, data) {
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
 
-  d3.tsv("data.tsv", function(data_item) {
-    return {
-      name: data_item.name,
-      value: +data_item.value // convert column to number
-    };
-  }).then(function(data_array) {
     x_rot.domain(data_array.map(function(d) { return d.name; }));
     y_rot.domain([0, d3.max(data_array, function(d) { return d.value; })]);
-
+    /*
     var bar = chartROT.selectAll("g")
         .data(data_array)
       .enter().append("g")
         .attr("transform", function(d) { return "translate(" + x_rot(d.name) + ",0)"; });
 
-    /*
     bar.append("rect")
         .attr("y", function(d) { return y_rot(d.value); })
         .attr("height", function(d) { return height - y_rot(d.value); })
         .attr("width", x_rot.bandwidth());
-
-    bar.append("text")
+      bar.append("text")
         .attr("x", x_rot.bandwidth() / 2)
         .attr("y", function(d) { return y_rot(d.value) + 3; })
         .attr("dy", ".75em")
         .text(function(d) { return d.value; });
-    */
-
+*/
     chartROT.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -138,15 +138,22 @@ d3.tsv("data.tsv", function(error, data) {
 
     chartROT.append("g")
       .attr("class", "y axis")
-      .call(yAxis);    
+      .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+          .text("Frequency");    
 
-    chart.selectAll(".bar")
+    chartROT.selectAll(".bar")
       .data(data_array)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x_rot(d.name); })
-      .attr("y", function(d) { return y_rot(d.value); })
-      .attr("height", function(d) { return height - y_rot(d.value); })
-      .attr("width", x_rot.bandwidth());
+      .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return x_rot(d.name); })
+        .attr("y", function(d) { return y_rot(d.value); })
+        .attr("height", function(d) { return height - y_rot(d.value); })
+        .attr("width", x_rot.bandwidth());
   });    
+
 });
